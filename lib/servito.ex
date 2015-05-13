@@ -9,7 +9,7 @@ defmodule Servito do
 
   defmacro post(url, fun) do
     quote do
-      {unquote(url), "POST", unquote(fun)}
+      {unquote(url), "POST", :erlang.term_to_binary(unquote(fun))}
     end
   end
 
@@ -96,7 +96,7 @@ defmodule Servito do
               {bindings, req} = :cowboy_req.bindings req
               bindings = Enum.into bindings, %{}
               {:ok, json} = JSX.decode body
-              f = unquote handler_fun
+              f = :erlang.binary_to_term(unquote handler_fun)
               {req, state} = f.(bindings, headers, body, req, state)
               {:halt, req, state}
             end
@@ -134,7 +134,7 @@ defmodule Servito do
         fun,
         [
           name,
-          1,
+          acceptors,
           [{:ip, address}, {:port, port} | cowboy_options],
           [{:env, [{:dispatch, dispatch}]}]
         ]
