@@ -9,9 +9,11 @@ defmodule Test do
   def test() do
     serve :myserver, :http, "127.0.0.1", 9003, 1, [], [
       post("/pepe", fn(bindings, headers, body, req, state) ->
-        Logger.debug "Bindings: #{inspect bindings}"
-        Logger.debug "Headers: #{inspect headers}"
-        Logger.debug "Body: #{inspect body}"
+        Logger.debug "POST Bindings: #{inspect bindings}"
+        Logger.debug "POST Headers: #{inspect headers}"
+        Logger.debug "POST Body: #{inspect body}"
+        status 202
+        Logger.debug "AA: #{inspect req}"
         {req, state}
       end)
     ]

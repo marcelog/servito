@@ -13,12 +13,30 @@ defmodule Servito do
     end
   end
 
+  defmacro get(url, fun) do
+    quote do
+      {unquote(url), "GET", :erlang.term_to_binary(unquote(fun))}
+    end
+  end
+
+  defmacro delete(url, fun) do
+    quote do
+      {unquote(url), "DELETE", :erlang.term_to_binary(unquote(fun))}
+    end
+  end
+
   defmacro unserve(name) do
     quote [
       location: :keep,
       bind_quoted: [name: name]
     ] do
       :cowboy.stop_listener name
+    end
+  end
+
+  defmacro status(code) do
+    quote do
+      {:ok, var!(req)} = :cowboy_req.reply unquote(code), var!(req)
     end
   end
 
