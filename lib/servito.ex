@@ -115,7 +115,7 @@ defmodule Servito do
               bindings = Enum.into bindings, %{}
               {:ok, json} = JSX.decode body
               f = :erlang.binary_to_term(unquote handler_fun)
-              {req, state} = f.(bindings, headers, body, req, state)
+              {req, state} = f.(bindings, headers, json, req, state)
               {:halt, req, state}
             end
 
