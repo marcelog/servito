@@ -34,9 +34,12 @@ defmodule Servito do
     end
   end
 
-  defmacro status(code) do
+  defmacro ret(status, headers, json_body) do
     quote do
-      {:ok, var!(req)} = :cowboy_req.reply unquote(code), var!(req)
+      {:ok, body} = JSX.encode unquote(json_body)
+      req = var!(req)
+      state = var!(state)
+      {unquote(status), unquote(headers), to_char_list(body), req, state}
     end
   end
 
@@ -115,7 +118,8 @@ defmodule Servito do
               bindings = Enum.into bindings, %{}
               {:ok, json} = JSX.decode body
               f = :erlang.binary_to_term(unquote handler_fun)
-              {req, state} = f.(bindings, headers, json, req, state)
+              {status, headers, body, req, state} = f.(bindings, headers, json, req, state)
+              {:ok, req} = :cowboy_req.reply status, headers, body, req
               {:halt, req, state}
             end
 

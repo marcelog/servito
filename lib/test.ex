@@ -12,9 +12,7 @@ defmodule Test do
         Logger.debug "POST Bindings: #{inspect bindings}"
         Logger.debug "POST Headers: #{inspect headers}"
         Logger.debug "POST Body: #{inspect body}"
-        status 202
-        Logger.debug "AA: #{inspect req}"
-        {req, state}
+        ret 202, [], %{resp_key_1: "resp_value_1"}
       end)
     ]
   end
