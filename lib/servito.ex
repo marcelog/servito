@@ -146,7 +146,7 @@ defmodule Servito do
               {bindings, req} = :cowboy_req.bindings req
               bindings = Enum.into bindings, %{}
               {ctype, req} = :cowboy_req.header "accept", req
-              case ctype do
+              data = case ctype do
                 "application/json" ->
                   {:ok, json} = JSX.decode body
                   json
@@ -155,7 +155,7 @@ defmodule Servito do
                   doc
               end
               f = :erlang.binary_to_term(unquote handler_fun)
-              {status, headers, body, req, state} = f.(bindings, headers, json, req, state)
+              {status, headers, body, req, state} = f.(bindings, headers, data, req, state)
               {:ok, req} = :cowboy_req.reply status, headers, body, req
               {:halt, req, state}
             end
