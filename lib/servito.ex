@@ -62,7 +62,7 @@ defmodule Servito do
       end
       req = var!(req)
       state = var!(state)
-      {unquote(status), unquote(headers), to_char_list(body), req, state}
+      {unquote(status), unquote(headers), body, req, state}
     end
   end
 
