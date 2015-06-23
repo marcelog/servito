@@ -4,23 +4,39 @@ defmodule Servito do
   defmacro __using__(_opts) do
     quote do
       import Servito
+      defp format_xml(list) do
+        format_xml list, []
+      end
+
+      defp format_xml([], acc) do
+        Enum.reverse acc
+      end
+
+      defp format_xml([{k, v}|rest], acc) do
+        v = if is_list(v) do
+          format_xml v
+        else
+          v
+        end
+        format_xml rest, [{k, %{}, v}|acc]
+      end
     end
   end
 
   defmacro post(url, fun) do
-    quote do
+    quote [location: :keep] do
       {unquote(url), "POST", :erlang.term_to_binary(unquote(fun))}
     end
   end
 
   defmacro get(url, fun) do
-    quote do
+    quote [location: :keep] do
       {unquote(url), "GET", :erlang.term_to_binary(unquote(fun))}
     end
   end
 
   defmacro delete(url, fun) do
-    quote do
+    quote [location: :keep] do
       {unquote(url), "DELETE", :erlang.term_to_binary(unquote(fun))}
     end
   end
@@ -34,9 +50,16 @@ defmodule Servito do
     end
   end
 
-  defmacro ret(status, headers, json_body) do
-    quote do
-      {:ok, body} = JSX.encode unquote(json_body)
+  defmacro ret(status, headers, payload) do
+    quote [location: :keep] do
+      payload = unquote payload
+      body = cond do
+        is_map(payload) ->
+          {:ok, body} = JSX.encode payload
+          body
+        is_binary(payload) -> payload
+        is_list(payload) -> format_xml(payload) |> XmlBuilder.generate
+      end
       req = var!(req)
       state = var!(state)
       {unquote(status), unquote(headers), to_char_list(body), req, state}
@@ -75,7 +98,7 @@ defmodule Servito do
             require Logger
             use Servito
 
-            def init({unquote(transport), unquote(scheme)}, _req, _opts) do
+            def init({unquote(transport), :http}, _req, _opts) do
               {:upgrade, :protocol, :cowboy_rest}
             end
 
@@ -84,11 +107,17 @@ defmodule Servito do
             end
 
             def content_types_provided(req, state) do
-              {[{"application/json", :to_json}], req, state}
+              {[
+                {"application/json", :to_json},
+                {"application/xml", :to_xml}
+              ], req, state}
             end
 
             def content_types_accepted(req, state) do
-              {[{{"application", "json", :*}, :from_json}], req, state}
+              {[
+                {{"application", "json", :*}, :from_json},
+                {{"application", "xml", :*}, :from_xml}
+              ], req, state}
             end
 
             def options(req, state) do
@@ -116,7 +145,15 @@ defmodule Servito do
               {headers, req} = :cowboy_req.headers req
               {bindings, req} = :cowboy_req.bindings req
               bindings = Enum.into bindings, %{}
-              {:ok, json} = JSX.decode body
+              {ctype, req} = :cowboy_req.header "accept", req
+              case ctype do
+                "application/json" ->
+                  {:ok, json} = JSX.decode body
+                  json
+                "application/xml" ->
+                  {doc, _} = Exmerl.from_string body
+                  doc
+              end
               f = :erlang.binary_to_term(unquote handler_fun)
               {status, headers, body, req, state} = f.(bindings, headers, json, req, state)
               {:ok, req} = :cowboy_req.reply status, headers, body, req
@@ -128,6 +165,14 @@ defmodule Servito do
             end
 
             def to_json(req, state) do
+              dispatch req, state
+            end
+
+            def from_xml(req, state) do
+              dispatch req, state
+            end
+
+            def to_xml(req, state) do
               dispatch req, state
             end
 
@@ -149,7 +194,7 @@ defmodule Servito do
         {route, mod_name_handler, []}
       end
       dispatch = :cowboy_router.compile [{:_, routes}]
-      Logger.info "Starting HTTP at #{address}:#{port}"
+      Logger.info "Starting #{inspect scheme} at #{address}:#{port}"
       {:ok, address} = :inet.parse_address to_char_list(address)
       apply(
         :cowboy,

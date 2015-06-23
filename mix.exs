@@ -15,7 +15,10 @@ defmodule Servito.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 1.0.0"},
-      {:exjsx, "~> 3.1.0"}
+      {:exjsx, "~> 3.1.0"},
+      {:exmerl, "~> 0.1.1"},
+      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.0", only: :test},
+      {:xml_builder, "~> 0.0.6"}
     ]
   end
 end
