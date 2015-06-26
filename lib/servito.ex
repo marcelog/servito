@@ -147,6 +147,9 @@ defmodule Servito do
               bindings = Enum.into bindings, %{}
               {ctype, req} = :cowboy_req.header "accept", req
               data = case ctype do
+                :undefined ->
+                  {:ok, json} = JSX.decode body
+                  json
                 "application/json" ->
                   {:ok, json} = JSX.decode body
                   json
