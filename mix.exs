@@ -3,8 +3,8 @@ defmodule Servito.Mixfile do
 
   def project do
     [app: :servito,
-     version: "0.0.2",
-     elixir: "~> 1.1-dev",
+     version: "0.0.4",
+     elixir: "> 1.0.0",
      deps: deps]
   end
 
@@ -14,11 +14,11 @@ defmodule Servito.Mixfile do
 
   defp deps do
     [
-      {:cowboy, "~> 1.0.0"},
+      {:cowboy, "~> 1.0.4"},
       {:exjsx, "~> 3.2.0"},
       {:exmerl, "~> 0.1.1"},
-      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.0", only: :test},
-      {:xml_builder, "~> 0.0.6"}
+      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.3", only: :test},
+      {:xml_builder, "~> 0.0.8"}
     ]
   end
 end
