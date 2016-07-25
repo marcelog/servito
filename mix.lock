@@ -1,7 +1,7 @@
 %{"cowboy": {:hex, :cowboy, "1.0.4", "a324a8df9f2316c833a470d918aaf73ae894278b8aa6226ce7a9bf699388f878", [:rebar, :make], [{:cowlib, "~> 1.0.0", [hex: :cowlib, optional: false]}, {:ranch, "~> 1.0", [hex: :ranch, optional: false]}]},
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], []},
   "exjsx": {:hex, :exjsx, "3.2.0", "7136cc739ace295fc74c378f33699e5145bead4fdc1b4799822d0287489136fb", [:mix], [{:jsx, "~> 2.6.2", [hex: :jsx, optional: false]}]},
-  "exmerl": {:hex, :exmerl, "0.1.1", "9c9f426b947f483c4e09fa1557b0cb9ac8979d6776d5fc5b273feca0d0e6e7db", [:make, :mix], []},
+  "exmerl": {:git, "https://github.com/pwoolcoc/exmerl.git", "26ce73d6694d21208ffbaa1e87abd9c5407a0409", [ref: "26ce73d6694d21208ffbaa1e87abd9c5407a0409"]},
   "ibrowse": {:git, "https://github.com/cmullaparthi/ibrowse.git", "b28542d1e326ba44bcfaf7fd6d3c7f8761d20f08", [tag: "v4.3"]},
   "jsx": {:hex, :jsx, "2.6.2", "213721e058da0587a4bce3cc8a00ff6684ced229c8f9223245c6ff2c88fbaa5a", [:mix, :rebar], []},
   "ranch": {:hex, :ranch, "1.2.1", "a6fb992c10f2187b46ffd17ce398ddf8a54f691b81768f9ef5f461ea7e28c762", [:make], []},

@@ -16,7 +16,7 @@ defmodule Servito.Mixfile do
     [
       {:cowboy, "~> 1.0.4"},
       {:exjsx, "~> 3.2.0"},
-      {:exmerl, "~> 0.1.1"},
+      {:exmerl, github: "pwoolcoc/exmerl", ref: "26ce73d6694d21208ffbaa1e87abd9c5407a0409"},
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.3", only: :test},
       {:xml_builder, "~> 0.0.8"}
     ]
