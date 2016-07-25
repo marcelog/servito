@@ -3,7 +3,7 @@ defmodule Servito.Mixfile do
 
   def project do
     [app: :servito,
-     version: "0.0.4",
+     version: "0.0.5",
      elixir: "> 1.0.0",
      deps: deps]
   end
