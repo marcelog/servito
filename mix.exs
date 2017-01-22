@@ -5,7 +5,7 @@ defmodule Servito.Mixfile do
     [app: :servito,
      version: "0.0.5",
      elixir: "> 1.0.0",
-     deps: deps]
+     deps: deps()]
   end
 
   def application do
@@ -15,10 +15,10 @@ defmodule Servito.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 1.0.4"},
-      {:exjsx, "~> 3.2.0"},
-      {:exmerl, github: "pwoolcoc/exmerl", ref: "26ce73d6694d21208ffbaa1e87abd9c5407a0409"},
+      {:exjsx, "~> 3.2.1"},
+      {:exmerl, github: "portatext/exmerl", branch: "fixing_warnings_elixir_1_4_0"},
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.3", only: :test},
-      {:xml_builder, "~> 0.0.8"}
+      {:xml_builder, "~> 0.0.9"}
     ]
   end
 end
