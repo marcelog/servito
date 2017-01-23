@@ -5,4 +5,5 @@
   "ibrowse": {:git, "https://github.com/cmullaparthi/ibrowse.git", "b28542d1e326ba44bcfaf7fd6d3c7f8761d20f08", [tag: "v4.3"]},
   "jsx": {:hex, :jsx, "2.8.1", "1453b4eb3615acb3e2cd0a105d27e6761e2ed2e501ac0b390f5bbec497669846", [:mix, :rebar3], []},
   "ranch": {:hex, :ranch, "1.2.1", "a6fb992c10f2187b46ffd17ce398ddf8a54f691b81768f9ef5f461ea7e28c762", [:make], []},
+  "sweet_xml": {:hex, :sweet_xml, "0.6.4", "5d613e63033b1d6362898f3f1d65f70a352b32d4b32e1367bb20b8c2e30ba79d", [:mix], []},
   "xml_builder": {:hex, :xml_builder, "0.0.9", "68f336e8c5ba32c130d13e96a379cd77e0dbb1c5152c35a30be96c1d1566b05e", [:mix], []}}

@@ -16,7 +16,7 @@ defmodule Servito.Mixfile do
     [
       {:cowboy, "~> 1.0.4"},
       {:exjsx, "~> 3.2.1"},
-      {:exmerl, github: "portatext/exmerl", branch: "fixing_warnings_elixir_1_4_0"},
+      {:sweet_xml, "~> 0.6.4"},
       {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.3", only: :test},
       {:xml_builder, "~> 0.0.9"}
     ]

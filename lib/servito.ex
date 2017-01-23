@@ -4,6 +4,19 @@ defmodule Servito do
   defmacro __using__(_opts) do
     quote do
       import Servito
+      defp get_body(payload) when is_map payload do
+        {:ok, body} = JSX.encode payload
+        body
+      end
+
+      defp get_body(payload) when is_binary payload do
+        payload
+      end
+
+      defp get_body(payload) when is_list payload do
+        format_xml(payload) |> XmlBuilder.generate
+      end
+
       defp format_xml(list) do
         format_xml list, []
       end
@@ -53,13 +66,8 @@ defmodule Servito do
   defmacro ret(status, headers, payload) do
     quote [location: :keep] do
       payload = unquote payload
-      body = cond do
-        is_map(payload) ->
-          {:ok, body} = JSX.encode payload
-          body
-        is_binary(payload) -> payload
-        is_list(payload) -> format_xml(payload) |> XmlBuilder.generate
-      end
+
+      body = get_body payload
       req = var!(req)
       state = var!(state)
       {unquote(status), unquote(headers), body, req, state}
@@ -154,7 +162,7 @@ defmodule Servito do
                   {:ok, json} = JSX.decode body
                   json
                 "application/xml" ->
-                  {doc, _} = Exmerl.from_string body
+                  doc = SweetXml.parse body
                   doc
               end
               f = :erlang.binary_to_term(unquote handler_fun)
