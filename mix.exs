@@ -17,7 +17,7 @@ defmodule Servito.Mixfile do
       {:cowboy, "~> 1.0.4"},
       {:exjsx, "~> 3.2.1"},
       {:sweet_xml, "~> 0.6.4"},
-      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.3", only: :test},
+      {:ibrowse, "~> 4.4.0", only: :test},
       {:xml_builder, "~> 0.0.9"}
     ]
   end
